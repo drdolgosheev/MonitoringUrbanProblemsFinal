@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "817138669618",
+    "firebase_url": "https://urbanstudproj.firebaseio.com",
+    "project_id": "urbanstudproj",
+    "storage_bucket": "urbanstudproj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817138669618:android:a896441ff9f6b292ea042b",
+        "android_client_info": {
+          "package_name": "com.example.monitoringurbanproblems"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817138669618-g5lmonugk3mojgqm6kk69dah33l5mi56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.monitoringurbanproblems",
+            "certificate_hash": "5080dd1d82814799edb46bd191390d730dd53613"
+          }
+        },
+        {
+          "client_id": "817138669618-q21sthabs7ti16lsck7g8376q1vgabkp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcR1gyPQCwpUPvyJkUZqnpEQqHx7yoQJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817138669618-q21sthabs7ti16lsck7g8376q1vgabkp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
