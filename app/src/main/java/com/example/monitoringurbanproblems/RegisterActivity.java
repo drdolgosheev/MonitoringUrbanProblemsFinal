@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private Button reg_but;
     private TextInputEditText login;
@@ -33,6 +35,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private String user_name, user_surname;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private Problem problem;
+    private List<Problem> prob_list;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -51,8 +56,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         conf_pass = (EditText) findViewById(R.id.passwordConfiration);
         allReg = (TextView) findViewById(R.id.alreadyReg);
 
+        problem = new Problem(0,0, "testid", "testdesc",
+                "testurl", 0, "testname");
+        prob_list.add(problem);
         user = new User("John","Doe","test@mail.com",
-                0,0,false,false);
+                0,0,false,false, prob_list);
         user_name_text = (TextInputEditText) findViewById(R.id.user_name);
         user_surname_text = (TextInputEditText) findViewById(R.id.user_surname);
 

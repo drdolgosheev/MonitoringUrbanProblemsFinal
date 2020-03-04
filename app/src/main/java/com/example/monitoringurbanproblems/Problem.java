@@ -5,10 +5,11 @@ import android.content.Context;
 import com.google.firebase.database.annotations.Nullable;
 
 public class Problem {
+    private String name = "";
     private double id = 0;
     private double latitude = 0;
     private double longitude = 0;
-    private String user_id;
+    private String user_id = "";
     private String description;
     /*
     1 - не просмотрена
@@ -20,13 +21,14 @@ public class Problem {
     private String img_url;
 
     public Problem(double latitude, double longitude, String user_id, String description,
-                      String img_url, double id) {
+                      String img_url, double id, String name) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.user_id = user_id;
         this.description = description;
         this.img_url = img_url;
         this.id = id;
+        this.name = name;
     }
 
     public double getLatitude() {
@@ -49,7 +51,7 @@ public class Problem {
         return user_id;
     }
 
-    public void setUserId(User user) {
+    public void setUserId(String user_id) {
         this.user_id = user_id;
     }
 
@@ -85,11 +87,15 @@ public class Problem {
         this.id = id;
     }
 
-    public void addAProblem(Context cur_context, User cur_user) {
-        boolean isSucsessful = false;
-    }
-
     public void addImage(Context cur_content, User cur_user) {
 
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 }

@@ -152,11 +152,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 try {
-                    double lat = cur_marker.getPosition().latitude;
-                    double lon = cur_marker.getPosition().longitude;
+                    double lat = 0;
+                    double lon = 0;
+                    lat = cur_marker.getPosition().latitude;
+                    lon = cur_marker.getPosition().longitude;
                     Toast.makeText(getContext(), getAddressForLocation(lat, lon).getAddressLine(0),
                             Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getContext(), add_problem.class);
+                    intent.putExtra("longitude", lon);
+                    intent.putExtra("latitude", lat);
                     startActivity(intent);
                 } catch (IOException e) {
                     e.printStackTrace();
