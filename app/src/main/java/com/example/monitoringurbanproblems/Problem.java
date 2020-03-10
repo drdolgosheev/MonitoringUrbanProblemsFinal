@@ -20,6 +20,8 @@ public class Problem {
     private int status;
     private String img_url;
 
+    public Problem(){}
+
     public Problem(double latitude, double longitude, String user_id, String description,
                       String img_url, double id, String name) {
         this.latitude = latitude;

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,7 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private Button reg_but;
@@ -56,9 +61,131 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         conf_pass = (EditText) findViewById(R.id.passwordConfiration);
         allReg = (TextView) findViewById(R.id.alreadyReg);
 
+        prob_list = new List<Problem>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(@Nullable Object o) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public Iterator<Problem> iterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @NonNull
+            @Override
+            public <T> T[] toArray(@NonNull T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Problem problem) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(@Nullable Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(@NonNull Collection<? extends Problem> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, @NonNull Collection<? extends Problem> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(@NonNull Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Problem get(int index) {
+                return null;
+            }
+
+            @Override
+            public Problem set(int index, Problem element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Problem element) {
+
+            }
+
+            @Override
+            public Problem remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(@Nullable Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(@Nullable Object o) {
+                return 0;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<Problem> listIterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<Problem> listIterator(int index) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<Problem> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
         problem = new Problem(0,0, "testid", "testdesc",
                 "testurl", 0, "testname");
-        prob_list.add(problem);
+        prob_list.add(0,problem);
         user = new User("John","Doe","test@mail.com",
                 0,0,false,false, prob_list);
         user_name_text = (TextInputEditText) findViewById(R.id.user_name);

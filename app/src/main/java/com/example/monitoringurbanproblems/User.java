@@ -1,5 +1,7 @@
 package com.example.monitoringurbanproblems;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.List;
 
 public class User {
@@ -11,6 +13,8 @@ public class User {
     private boolean isBaned = false;
     private boolean isModerator = false;
     private List<Problem> problems;
+
+    public User(){}
 
     public User(String name, String surname, String mail, int strikeCount, int problemCount,
                 boolean isBaned, boolean isModerator, List<Problem> problems){
@@ -84,7 +88,8 @@ public class User {
         return this.problems;
     }
 
-    public void getProblems(List<Problem> problems) {
+    public void setProblems(List<Problem> problems) {
         this.problems = problems;
     }
+
 }
