@@ -201,9 +201,7 @@ public class add_problem extends Activity implements View.OnClickListener{
             }else {
                  problem_description = prob_desc.getText().toString();
                  problem_name = prob_name.getText().toString();
-//                 Log.e("GASGH", problem_description);
                  problem.setDescription(problem_description);
-//                 Log.e("GACHIMUCHI", problem.getDescription());
                  problem.setName(problem_name);
                  problem.setLongitude(longitude);
                  problem.setLatitude(latitude);
@@ -214,6 +212,9 @@ public class add_problem extends Activity implements View.OnClickListener{
                          Log.e("TAG", mail);
                          cur_user = documentSnapshot.toObject(User.class);
                          problemList = cur_user.getProblems();
+                         problem.setId(cur_user.getProblemCount());
+                         cur_user.setProblemCount(cur_user.getProblemCount() + 1);
+                         problem.setUserId(cur_user.getMail());
                          problemList.add(problem);
                          cur_user.setProblems(problemList);
                          db.collection("users").document(documentSnapshot.getId()).set(cur_user);

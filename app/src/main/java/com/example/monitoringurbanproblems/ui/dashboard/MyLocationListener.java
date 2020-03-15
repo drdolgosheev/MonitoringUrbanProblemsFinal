@@ -2,10 +2,12 @@ package com.example.monitoringurbanproblems.ui.dashboard;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 
 public class MyLocationListener implements LocationListener {
@@ -29,20 +31,21 @@ public class MyLocationListener implements LocationListener {
 
         while (imHere== null) {
             Log.e("TAG", "No Location yet");
-            imHere = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            imHere = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         }
 
         l_latitude = imHere.getLatitude();
         l_longitude = imHere.getLongitude();
         Log.e("Location: " , l_latitude+ " "+ l_longitude);
-//        Log.e("ksdlkdsklkldskdlslkdslkdsklds", "latitude:" + latitude + " longitude:" + longitude);
     }
 
     @Override
     public void onLocationChanged(Location loc) {
-        imHere = loc;
-        l_latitude = loc.getLatitude();
-        l_longitude = loc.getLongitude();
+        if (loc != null) {
+            imHere = loc;
+            l_latitude = loc.getLatitude();
+            l_longitude = loc.getLongitude();
+        }
     }
     @Override
     public void onProviderDisabled(String provider) {}
