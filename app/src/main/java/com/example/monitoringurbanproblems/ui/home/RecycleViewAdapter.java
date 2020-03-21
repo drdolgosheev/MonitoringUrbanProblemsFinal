@@ -24,12 +24,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     private ArrayList<String> mImagesName = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<String> mDescription = new ArrayList<>();
     private Context mContext;
 
-    public RecycleViewAdapter(ArrayList<String> mImagesName, ArrayList<String> mImages, Context mContext) {
+    public RecycleViewAdapter(ArrayList<String> mDescription, ArrayList<String> mImagesName,
+                              ArrayList<String> mImages, Context mContext) {
         this.mImagesName = mImagesName;
         this.mImages = mImages;
         this.mContext = mContext;
+        this.mDescription = mDescription;
     }
 
 
@@ -49,6 +52,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         holder.problem_name.setText(mImagesName.get(position));
 
+        holder.prob_desc.setText(mDescription.get(position));
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,13 +69,14 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         CircleImageView image;
-        TextView problem_name;
+        TextView problem_name, prob_desc;
         RelativeLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.problem_image);
             problem_name = itemView.findViewById(R.id.problem_description);
+            prob_desc = itemView.findViewById(R.id.prob_desc);
             layout = itemView.findViewById(R.id.parent_layout);
         }
     }

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,27 +20,42 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.monitoringurbanproblems.Problem;
 import com.example.monitoringurbanproblems.R;
+import com.example.monitoringurbanproblems.User;
+import com.example.monitoringurbanproblems.add_problem;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.core.app.ActivityCompat.finishAffinity;
 
 public class HomeFragment extends Fragment {
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
+    User cur_user;
+    Problem problem;
+    List<Problem> problemList;
+    String problem_description, problem_name;
     private RecyclerView recyclerView;
     private HomeViewModel homeViewModel;
     private ArrayList<String> mImagesName = new ArrayList<>();
     private ArrayList<String> mImagesUrls = new ArrayList<>();
+    private ArrayList<String> mDescr = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_problems, container, false);
-        initImageBitmaps();
         recyclerView = (RecyclerView) root.findViewById(R.id.ResycleWiev);
-        initRecyclerView();
+        initImageBitmaps();
 //        final TextView textView = root.findViewById(R.id.text_home);
 //        homeViewModel.getText().observe(this, new Observer<String>() {
 //            @Override
@@ -54,40 +70,28 @@ public class HomeFragment extends Fragment {
     }
 
     private void initImageBitmaps(){
-        mImagesUrls.add("gs://urbanstudproj.appspot.com/test_user/chelovek.jpg");
-        mImagesName.add("Havasu Falls");
 
-        mImagesUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mImagesName.add("Trondheim");
-
-        mImagesUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mImagesName.add("Portugal");
-
-        mImagesUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mImagesName.add("Rocky Mountain National Park");
-
-
-        mImagesUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mImagesName.add("Mahahual");
-
-        mImagesUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mImagesName.add("Frozen Lake");
-
-
-        mImagesUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mImagesName.add("White Sands Desert");
-
-        mImagesUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mImagesName.add("Austrailia");
-
-        mImagesUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mImagesName.add("Washington");
-
-
+        final String mail = fb_user.getEmail();
+        cur_user = null;
+            db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Log.e("TAG", mail);
+                    cur_user = documentSnapshot.toObject(User.class);
+                    problemList = cur_user.getProblems();
+                    Log.e("KAJHJKDSHJASKJHASJKDHJKSAHDJKHDSJKHSDAJKHSADJKH", " " + problemList.size());
+                    for (int i = 0; i < problemList.size(); i++) {
+                        mImagesUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+                        mImagesName.add(problemList.get(i).getName());
+                        mDescr.add(problemList.get(i).getDescription());
+                    }
+                    initRecyclerView();
+                }
+            });
     }
 
     private void initRecyclerView(){
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mImagesName, mImagesUrls, getContext());
+        RecycleViewAdapter adapter = new RecycleViewAdapter(mDescr, mImagesName, mImagesUrls, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

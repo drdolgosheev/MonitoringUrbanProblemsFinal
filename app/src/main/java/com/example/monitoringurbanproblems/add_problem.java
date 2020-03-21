@@ -31,10 +31,10 @@ public class add_problem extends Activity implements View.OnClickListener{
     Bundle arguments;
     Double longitude;
     Double latitude;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     EditText prob_desc, prob_name;
     Button confirm_but;
     FloatingActionButton photo_button;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
     User cur_user;
     Problem problem;
@@ -48,6 +48,10 @@ public class add_problem extends Activity implements View.OnClickListener{
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
         setContentView(R.layout.activity_add_problem);
+
+        View v = new View(add_problem.this);
+
+        v.setClipToOutline(true);
 
         prob_desc = (EditText) findViewById(R.id.text_problem_description);
         prob_name = (EditText) findViewById(R.id.prob_name);
@@ -179,7 +183,6 @@ public class add_problem extends Activity implements View.OnClickListener{
                 return null;
             }
         };
-
     }
 
     @Override

@@ -3,10 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/round_corner_slim"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
-    android:id="@+id/parent_layout">
+    android:id="@+id/parent_layout"
+    android:layout_marginTop="2dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/problem_image"
@@ -16,17 +18,24 @@
         />
 
     <TextView
+        android:id="@+id/problem_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Problem assign"
-        android:id="@+id/problem_description"
+        android:layout_marginLeft="41dp"
         android:layout_toRightOf="@id/problem_image"
+        android:text="Problem assign"
         android:textColor="#000"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="30dp"
-        android:textSize="17sp"
-        />
+        android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/prob_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/problem_image"
+        android:text="Problem description"
+        android:textColor="#000" />
 
 
 </RelativeLayout>
