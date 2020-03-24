@@ -37,5 +37,16 @@
         android:text="Problem description"
         android:textColor="#000" />
 
+    <TextView
+        android:id="@+id/problem_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textColor="#000"
+        android:textSize="10sp"
+        android:layout_alignTop="@+id/problem_image"
+        android:layout_marginTop="90dp"
+        />
+
 
 </RelativeLayout>

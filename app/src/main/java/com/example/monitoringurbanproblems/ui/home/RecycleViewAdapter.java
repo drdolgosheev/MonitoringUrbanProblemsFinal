@@ -1,6 +1,7 @@
 package com.example.monitoringurbanproblems.ui.home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.monitoringurbanproblems.Problem;
 import com.example.monitoringurbanproblems.R;
 
 import java.util.ArrayList;
@@ -25,14 +27,16 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     private ArrayList<String> mImagesName = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
     private ArrayList<String> mDescription = new ArrayList<>();
+    private ArrayList<Integer> mStatus = new ArrayList<>();
     private Context mContext;
 
-    public RecycleViewAdapter(ArrayList<String> mDescription, ArrayList<String> mImagesName,
+    public RecycleViewAdapter(ArrayList<Integer> mStatus, ArrayList<String> mDescription, ArrayList<String> mImagesName,
                               ArrayList<String> mImages, Context mContext) {
         this.mImagesName = mImagesName;
         this.mImages = mImages;
         this.mContext = mContext;
         this.mDescription = mDescription;
+        this.mStatus = mStatus;
     }
 
 
@@ -54,6 +58,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         holder.prob_desc.setText(mDescription.get(position));
 
+        holder.prob_status.setText("Статус: " + Problem.getStatus(mStatus.get(position)));
+//        holder.prob_status.setTextColor();
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +76,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         CircleImageView image;
-        TextView problem_name, prob_desc;
+        TextView problem_name, prob_desc, prob_status;
         RelativeLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -77,6 +84,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             image = itemView.findViewById(R.id.problem_image);
             problem_name = itemView.findViewById(R.id.problem_description);
             prob_desc = itemView.findViewById(R.id.prob_desc);
+            prob_status = itemView.findViewById(R.id.problem_status);
             layout = itemView.findViewById(R.id.parent_layout);
         }
     }

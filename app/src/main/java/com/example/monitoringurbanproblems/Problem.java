@@ -100,4 +100,23 @@ public class Problem {
     public void setName(String name){
         this.name = name;
     }
+
+    public static String getStatus(int State){
+
+        if (State == 1){
+            return "На рассмотрении";
+        }
+        else if (State == 2){
+            return "Просмотрено";
+        }
+        else if (State == 3){
+            return "Проверена";
+        }
+        else if (State == 4){
+            return "Решена";
+        }else {
+            return "Ошибка";
+        }
+    }
+
 }

@@ -233,6 +233,7 @@ public class add_problem extends Activity implements View.OnClickListener {
                 problem.setName(problem_name);
                 problem.setLongitude(longitude);
                 problem.setLatitude(latitude);
+                problem.setStatus(1);
                 final String mail = fb_user.getEmail();
                 db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -260,6 +261,7 @@ public class add_problem extends Activity implements View.OnClickListener {
     }
 
     private void dispatchTakePictureIntent() {
+        confirm_but.setEnabled(false);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -336,19 +338,33 @@ public class add_problem extends Activity implements View.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();
             setPic();
-            Uri file = Uri.fromFile(new File(currentPhotoPath));
-            StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-            UploadTask uploadTask = riversRef.putFile(file);
+            Toast.makeText(add_problem.this, "Ожидайте, изображение загружается",
+                    Toast.LENGTH_SHORT).show();
+            db.collection("users").document(fb_user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.e("FAILURE:", "Can not Upload an image");
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.e("Success:", "You Upload an image");
+                    cur_user = documentSnapshot.toObject(User.class);
+                    Integer pc = cur_user.getProblemCount() + 1;
+                    Uri file = Uri.fromFile(new File(currentPhotoPath));
+                    final StorageReference riversRef = storageRef.child("images/"+fb_user.getEmail() + "/" + pc);
+                    UploadTask uploadTask = riversRef.putFile(file);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(add_problem.this, "При попытке добавить изображение произошла ошибка",
+                                    Toast.LENGTH_SHORT).show();
+                            Log.e("FAILURE:", "Can not Upload an image");
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.e("Success:", "You Upload an image");
+                            confirm_but.setEnabled(true);
+                            Toast.makeText(add_problem.this, "Изображение успешно добавлено",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
         }

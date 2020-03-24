@@ -128,7 +128,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
         LatLng test = new LatLng(latitude, longitude);
 
-        cur_marker = mGoogleMap.addMarker(new MarkerOptions().position(test).title("Test").draggable(true));
+        cur_marker = mGoogleMap.addMarker(new MarkerOptions().position(test).title("Добавить проблему").draggable(true));
         mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {

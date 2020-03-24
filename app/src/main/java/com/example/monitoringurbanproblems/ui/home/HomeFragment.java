@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,11 +25,15 @@ import com.example.monitoringurbanproblems.Problem;
 import com.example.monitoringurbanproblems.R;
 import com.example.monitoringurbanproblems.User;
 import com.example.monitoringurbanproblems.add_problem;
+import com.example.monitoringurbanproblems.callbackListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +44,20 @@ public class HomeFragment extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef;
     User cur_user;
     Problem problem;
     List<Problem> problemList;
     String problem_description, problem_name;
     private RecyclerView recyclerView;
     private HomeViewModel homeViewModel;
+    private ArrayList<Integer> mStatus = new ArrayList<>();
     private ArrayList<String> mImagesName = new ArrayList<>();
     private ArrayList<String> mImagesUrls = new ArrayList<>();
     private ArrayList<String> mDescr = new ArrayList<>();
+    public String url = " ";
+    public int counter = 1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +65,8 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_problems, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.ResycleWiev);
+        counter = 1;
+        storageRef = storage.getReference();
         initImageBitmaps();
 //        final TextView textView = root.findViewById(R.id.text_home);
 //        homeViewModel.getText().observe(this, new Observer<String>() {
@@ -70,7 +82,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initImageBitmaps(){
-
         final String mail = fb_user.getEmail();
         cur_user = null;
             db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -78,20 +89,53 @@ public class HomeFragment extends Fragment {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Log.e("TAG", mail);
                     cur_user = documentSnapshot.toObject(User.class);
-                    problemList = cur_user.getProblems();
-                    Log.e("KAJHJKDSHJASKJHASJKDHJKSAHDJKHDSJKHSDAJKHSADJKH", " " + problemList.size());
-                    for (int i = 0; i < problemList.size(); i++) {
-                        mImagesUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-                        mImagesName.add(problemList.get(i).getName());
-                        mDescr.add(problemList.get(i).getDescription());
+                    if (cur_user.getProblemCount() != 0) {
+                        problemList = cur_user.getProblems();
+
+                        for (counter = 1; counter <= cur_user.getProblemCount(); counter++) {
+                            Log.e("COUNTER1", " " + counter);
+                            Log.e("PROB1", " " + cur_user.getProblemCount());
+                            mImagesName.add(problemList.get(counter - 1).getName());
+                            Log.e("mName: ", mImagesName.toString());
+                            mDescr.add(problemList.get(counter - 1).getDescription());
+                            mStatus.add(problemList.get(counter - 1).getStatus());
+                        }
+
+                        counter = 1;
+                        for(counter = 1; counter<= cur_user.getProblemCount(); counter++){
+                            url = " ";
+                            StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + counter);
+                            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    url = uri.toString();
+                                    mImagesUrls.add(url);
+                                    Log.e("mImagesUrls: ", mImagesUrls.toString());
+                                    Log.e("counter: ", counter + " ");
+                                    try {
+                                        Thread.sleep(   500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (counter == cur_user.getProblemCount()+1) {
+                                        initRecyclerView();
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
+                        }
                     }
-                    initRecyclerView();
                 }
             });
+
     }
 
     private void initRecyclerView(){
-        RecycleViewAdapter adapter = new RecycleViewAdapter(mDescr, mImagesName, mImagesUrls, getContext());
+        RecycleViewAdapter adapter = new RecycleViewAdapter(mStatus, mDescr, mImagesName, mImagesUrls, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -123,6 +167,9 @@ public class HomeFragment extends Fragment {
                     })
                     .setCancelable(false).show();
         }
+    }
+
+    public void getUri(int i, final callbackListener myListener) {
     }
 
 }
