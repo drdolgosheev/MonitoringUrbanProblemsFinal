@@ -58,6 +58,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> mDescr = new ArrayList<>();
     public String url = " ";
     public int counter = 1;
+    public int counter2 = 1;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -98,25 +100,21 @@ public class HomeFragment extends Fragment {
                             mImagesName.add(problemList.get(counter - 1).getName());
                             Log.e("mName: ", mImagesName.toString());
                             mDescr.add(problemList.get(counter - 1).getDescription());
+                            // Тут возможно что то не так
                             mStatus.add(problemList.get(counter - 1).getStatus());
                         }
 
-                        counter = 1;
-                        for(counter = 1; counter<= cur_user.getProblemCount(); counter++){
+                        for(counter2 = 1; counter2<= cur_user.getProblemCount();counter2++){
                             url = " ";
-                            StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + counter);
+                            Log.e("counter: ", counter2 + " ");
+                            StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + counter2);
                             riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     url = uri.toString();
                                     mImagesUrls.add(url);
                                     Log.e("mImagesUrls: ", mImagesUrls.toString());
-                                    Log.e("counter: ", counter + " ");
-                                    try {
-                                        Thread.sleep(   500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+                                    Log.e("counter: ", counter2 + " ");
                                     if (counter == cur_user.getProblemCount()+1) {
                                         initRecyclerView();
                                     }
@@ -127,6 +125,11 @@ public class HomeFragment extends Fragment {
                                     // Handle any errors
                                 }
                             });
+                            try {
+                                Thread.sleep(   500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

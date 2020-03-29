@@ -10,21 +10,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="96dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Email: "
         android:textColor="#000"
         android:textSize="20sp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_pic"
+        tools:text="Email: " />
 
     <TextView
         android:id="@+id/problems_count_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="Загруженно проблем: "
         android:textColor="#000"
         android:textSize="20sp"
@@ -44,4 +43,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/problems_count_profile"
         app:layout_constraintVertical_bias="0.901" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar_pic"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_user_default"
+        android:scaleType="centerCrop"
+        />
+
+    <Button
+        android:id="@+id/upload_avatar"
+        android:layout_width="149dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/layout_bg"
+        android:text="Загрузить аватар"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_pic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

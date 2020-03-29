@@ -1,8 +1,13 @@
 package com.example.monitoringurbanproblems;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 
 import com.google.firebase.database.annotations.Nullable;
+
+import java.io.IOException;
+import java.util.Locale;
 
 public class Problem {
     private String name = "";
@@ -117,6 +122,11 @@ public class Problem {
         }else {
             return "Ошибка";
         }
+    }
+
+    public String getAddressForLocation(Context context, double lat, double lon) throws IOException {
+        Geocoder gc = new Geocoder(context, Locale.getDefault());
+        return gc.getFromLocation(lat, lon, 1).get(0).getAddressLine(0);
     }
 
 }

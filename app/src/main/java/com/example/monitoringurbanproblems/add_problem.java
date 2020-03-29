@@ -42,6 +42,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class add_problem extends Activity implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -58,7 +60,7 @@ public class add_problem extends Activity implements View.OnClickListener {
     Problem problem;
     List<Problem> problemList;
     String problem_description, problem_name;
-    ImageView prob_photo;
+//    ImageView prob_photo;
     String currentPhotoPath;
 
     @Override
@@ -74,7 +76,7 @@ public class add_problem extends Activity implements View.OnClickListener {
         v.setClipToOutline(true);
 
         storageRef = storage.getReference();
-        prob_photo = (ImageView) findViewById(R.id.prob_im);
+//        prob_photo = (ImageView) findViewById(R.id.prob_im);
         prob_desc = (EditText) findViewById(R.id.text_problem_description);
         prob_name = (EditText) findViewById(R.id.prob_name);
         confirm_but = (Button) findViewById(R.id.button_add_problem);
@@ -246,6 +248,7 @@ public class add_problem extends Activity implements View.OnClickListener {
                         problem.setUserId(cur_user.getMail());
                         problemList.add(problem);
                         cur_user.setProblems(problemList);
+                        cur_user.getProblems().get(cur_user.getProblemCount()-1).setId(cur_user.getProblemCount());
                         db.collection("users").document(documentSnapshot.getId()).set(cur_user);
                         Toast.makeText(add_problem.this, documentSnapshot.getId(),
                                 Toast.LENGTH_SHORT).show();
@@ -309,35 +312,36 @@ public class add_problem extends Activity implements View.OnClickListener {
         this.sendBroadcast(mediaScanIntent);
     }
 
-    private void setPic() {
-        // Get the dimensions of the View
-        int targetW = prob_photo.getWidth();
-        int targetH = prob_photo.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-        prob_photo.setImageBitmap(bitmap);
-    }
+//    private void setPic() {
+//        // Get the dimensions of the View
+//        int targetW = prob_photo.getWidth();
+//        int targetH = prob_photo.getHeight();
+//
+//        // Get the dimensions of the bitmap
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//
+//        // Determine how much to scale down the image
+//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+//
+//        // Decode the image file into a Bitmap sized to fill the View
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//        bmOptions.inPurgeable = true;
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+//        prob_photo.setImageBitmap(bitmap);
+//        prob_photo.animate().rotation(90);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic();
-            setPic();
+//            setPic();
             Toast.makeText(add_problem.this, "Ожидайте, изображение загружается",
                     Toast.LENGTH_SHORT).show();
             db.collection("users").document(fb_user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -346,6 +350,7 @@ public class add_problem extends Activity implements View.OnClickListener {
 
                     cur_user = documentSnapshot.toObject(User.class);
                     Integer pc = cur_user.getProblemCount() + 1;
+
                     Uri file = Uri.fromFile(new File(currentPhotoPath));
                     final StorageReference riversRef = storageRef.child("images/"+fb_user.getEmail() + "/" + pc);
                     UploadTask uploadTask = riversRef.putFile(file);

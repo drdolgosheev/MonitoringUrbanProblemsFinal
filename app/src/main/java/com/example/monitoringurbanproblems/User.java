@@ -13,11 +13,12 @@ public class User {
     private boolean isBaned = false;
     private boolean isModerator = false;
     private List<Problem> problems;
+    private String haveAva;
 
     public User(){}
 
     public User(String name, String surname, String mail, int strikeCount, int problemCount,
-                boolean isBaned, boolean isModerator, List<Problem> problems){
+                boolean isBaned, boolean isModerator, List<Problem> problems, String haveAva){
         this.name = name;
         this.surname = surname;
         this.mail = mail;
@@ -26,6 +27,7 @@ public class User {
         this.isBaned = isBaned;
         this.isModerator = isModerator;
         this.problems = problems;
+        this.haveAva = haveAva;
     }
 
     public String getMail() {
@@ -90,6 +92,14 @@ public class User {
 
     public void setProblems(List<Problem> problems) {
         this.problems = problems;
+    }
+
+    public String isHaveAva() {
+        return haveAva;
+    }
+
+    public void setHaveAva(String Ava) {
+        this.haveAva = Ava;
     }
 
 }

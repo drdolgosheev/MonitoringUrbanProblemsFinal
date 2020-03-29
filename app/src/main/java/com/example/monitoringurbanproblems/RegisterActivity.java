@@ -187,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 "testurl", 0, "testname");
         prob_list.add(0,problem);
         user = new User("John","Doe","test@mail.com",
-                0,0,false,false, prob_list);
+                0,0,false,false, prob_list, "");
         user_name_text = (TextInputEditText) findViewById(R.id.user_name);
         user_surname_text = (TextInputEditText) findViewById(R.id.user_surname);
 
