@@ -1,7 +1,9 @@
 package com.example.monitoringurbanproblems.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +13,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.monitoringurbanproblems.MainActivity;
 import com.example.monitoringurbanproblems.Problem;
 import com.example.monitoringurbanproblems.R;
+import com.example.monitoringurbanproblems.problemCard;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.protobuf.StringValue;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.ViewHolder >{
     private static final String TAG = "RecycleViewAdapter";
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();;
+    FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
 
     private ArrayList<String> mImagesName = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
@@ -49,22 +66,31 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG,"Is called.");
 
-        Glide.with(mContext).asBitmap().load(mImages.get(position)).into(holder.image);
+        int real_pos = position + 1;
+        Log.e("POS", position + " ");
+        StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + real_pos);
+        riversRef.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(mContext)
+                        .load(uri)
+                        .into(holder.image);
+            }
+        });
 
         holder.problem_name.setText(mImagesName.get(position));
 
         holder.prob_desc.setText(mDescription.get(position));
 
         holder.prob_status.setText("Статус: " + Problem.getStatus(mStatus.get(position)));
-//        holder.prob_status.setTextColor();
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,mImagesName.get(position), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,"Статус: " + Problem.getStatus(mStatus.get(position)), Toast.LENGTH_LONG).show();
             }
         });
     }

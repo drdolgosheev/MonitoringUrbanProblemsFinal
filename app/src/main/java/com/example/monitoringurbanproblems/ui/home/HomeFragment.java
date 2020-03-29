@@ -104,33 +104,33 @@ public class HomeFragment extends Fragment {
                             mStatus.add(problemList.get(counter - 1).getStatus());
                         }
 
-                        for(counter2 = 1; counter2<= cur_user.getProblemCount();counter2++){
-                            url = " ";
-                            Log.e("counter: ", counter2 + " ");
-                            StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + counter2);
-                            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    url = uri.toString();
-                                    mImagesUrls.add(url);
-                                    Log.e("mImagesUrls: ", mImagesUrls.toString());
-                                    Log.e("counter: ", counter2 + " ");
-                                    if (counter == cur_user.getProblemCount()+1) {
+//                        for(counter2 = 1; counter2<= cur_user.getProblemCount();counter2++){
+//                            url = " ";
+//                            Log.e("counter: ", counter2 + " ");
+//                            StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + counter2);
+//                            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                @Override
+//                                public void onSuccess(Uri uri) {
+//                                    url = uri.toString();
+//                                    mImagesUrls.add(url);
+//                                    Log.e("mImagesUrls: ", mImagesUrls.toString());
+//                                    Log.e("counter: ", counter2 + " ");
+//                                    if (counter == cur_user.getProblemCount()+1) {
                                         initRecyclerView();
-                                    }
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                }
-                            });
-                            try {
-                                Thread.sleep(   500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
+//                                    }
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception exception) {
+//                                    // Handle any errors
+//                                }
+//                            });
+//                            try {
+//                                Thread.sleep(   500);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
                     }
                 }
             });

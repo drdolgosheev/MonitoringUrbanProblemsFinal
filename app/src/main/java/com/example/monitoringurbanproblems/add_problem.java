@@ -47,6 +47,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class add_problem extends Activity implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef;
+    FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
     Bundle arguments;
     Double longitude;
     Double latitude;
@@ -54,8 +56,6 @@ public class add_problem extends Activity implements View.OnClickListener {
     Button confirm_but;
     FloatingActionButton photo_button;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
-    StorageReference storageRef;
     User cur_user;
     Problem problem;
     List<Problem> problemList;
@@ -249,6 +249,7 @@ public class add_problem extends Activity implements View.OnClickListener {
                         problemList.add(problem);
                         cur_user.setProblems(problemList);
                         cur_user.getProblems().get(cur_user.getProblemCount()-1).setId(cur_user.getProblemCount());
+                        db.collection("problems").document(mail+"_"+cur_user.getProblemCount()).set(problem);
                         db.collection("users").document(documentSnapshot.getId()).set(cur_user);
                         Toast.makeText(add_problem.this, documentSnapshot.getId(),
                                 Toast.LENGTH_SHORT).show();
@@ -354,6 +355,10 @@ public class add_problem extends Activity implements View.OnClickListener {
                     Uri file = Uri.fromFile(new File(currentPhotoPath));
                     final StorageReference riversRef = storageRef.child("images/"+fb_user.getEmail() + "/" + pc);
                     UploadTask uploadTask = riversRef.putFile(file);
+
+                    final StorageReference riversRef2 = storageRef.child("prob_for_moder/"+fb_user.getEmail() + "_" + pc );
+                    UploadTask uploadTask1 = riversRef2.putFile(file);
+
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
