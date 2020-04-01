@@ -30,15 +30,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static androidx.core.content.ContextCompat.checkSelfPermission;
@@ -61,6 +69,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private DatabaseReference myRef;
     public Marker cur_marker;
     private Problem problem;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +105,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         criteria = new Criteria();
         provider = String.valueOf(locationManager.getBestProvider(criteria, true));
+
         if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
                 checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
@@ -109,6 +119,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             // for Activity#requestPermissions for more details.
             return;
         }
+
+        db.collection("problems").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<Problem> list = new ArrayList<>();
+                    for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult())
+                    {
+                        Problem cur_prob = queryDocumentSnapshot.toObject(Problem.class);
+                        LatLng probPos = new LatLng(cur_prob.getLatitude(), cur_prob.getLongitude());
+                        list.add(cur_prob);
+                        mGoogleMap.addMarker(new MarkerOptions().position(probPos).title(cur_prob.getName()).draggable(false));
+                    }
+                }
+            }
+        });
 
         LocationListener locationListener = new MyLocationListener();
         while (location == null) {
@@ -126,9 +153,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.e("GPS: ", "No location yet");
             }
         }
+
         LatLng test = new LatLng(latitude, longitude);
 
-        cur_marker = mGoogleMap.addMarker(new MarkerOptions().position(test).title("Добавить проблему").draggable(true));
+        cur_marker = mGoogleMap.addMarker(new MarkerOptions().position(test).title("Добавить проблему").draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker marker) {
@@ -158,10 +186,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     lon = cur_marker.getPosition().longitude;
                     Toast.makeText(getContext(), getAddressForLocation(lat, lon).getAddressLine(0),
                             Toast.LENGTH_SHORT).show();
+                    if(marker.isDraggable()){
                     Intent intent = new Intent(getContext(), add_problem.class);
                     intent.putExtra("longitude", lon);
                     intent.putExtra("latitude", lat);
                     startActivity(intent);
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

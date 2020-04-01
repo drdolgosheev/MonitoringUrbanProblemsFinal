@@ -68,7 +68,7 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecycleViewAdapterModerator.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecycleViewAdapterModerator.ViewHolder holder, int position) {
 
         cur_pos = position;
         Log.e("cur_pos: ",  cur_pos+ " ");
@@ -120,12 +120,10 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
             }
         });
 
-        рщд
-
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,mImagesName.get(position), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,mImagesName.get(cur_pos), Toast.LENGTH_LONG).show();
             }
         });
     }
