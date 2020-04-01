@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class Problem {
     private String name = "";
-    private double id = 0;
+    private int id = 0;
     private double latitude = 0;
     private double longitude = 0;
     private String user_id = "";
@@ -28,7 +28,7 @@ public class Problem {
     public Problem(){}
 
     public Problem(double latitude, double longitude, String user_id, String description,
-                      String img_url, double id, String name) {
+                      String img_url, int id, String name) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.user_id = user_id;
@@ -86,11 +86,11 @@ public class Problem {
         this.img_url = img_url;
     }
 
-    public double getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(double id) {
+    public void setId(int id) {
         this.id = id;
     }
 

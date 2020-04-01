@@ -60,7 +60,6 @@ public class add_problem extends Activity implements View.OnClickListener {
     Problem problem;
     List<Problem> problemList;
     String problem_description, problem_name;
-//    ImageView prob_photo;
     String currentPhotoPath;
 
     @Override

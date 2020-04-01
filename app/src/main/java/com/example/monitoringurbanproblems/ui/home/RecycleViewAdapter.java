@@ -38,7 +38,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     private static final String TAG = "RecycleViewAdapter";
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference();;
+    StorageReference storageRef = storage.getReference();
     FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
 
     private ArrayList<String> mImagesName = new ArrayList<>();
@@ -102,7 +102,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         CircleImageView image;
-        TextView problem_name, prob_desc, prob_status;
+        TextView problem_name;
+        TextView prob_desc;
+        TextView prob_status;
         RelativeLayout layout;
 
         public ViewHolder(@NonNull View itemView) {

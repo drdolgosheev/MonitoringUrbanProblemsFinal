@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/round_corner_slim"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:id="@+id/parent_layout_moder"
+    android:layout_marginTop="2dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/problem_image_moder"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <TextView
+        android:id="@+id/problem_description_moder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="41dp"
+        android:layout_toRightOf="@id/problem_image_moder"
+        android:text="Problem assign"
+        android:textColor="#000"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/prob_desc_moder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@id/problem_image_moder"
+        android:text="Problem description"
+        android:textColor="#000" />
+
+    <RadioButton
+        android:id="@+id/radioButtonStatusChecked"
+        android:layout_width="116dp"
+        android:layout_height="21dp"
+        android:layout_alignTop="@+id/problem_image_moder"
+        android:layout_marginTop="110dp"
+        android:text="Проверенно" />
+
+    <RadioButton
+        android:id="@+id/radioButtonStatusSolved"
+        android:layout_width="116dp"
+        android:layout_height="21dp"
+        android:layout_alignTop="@+id/problem_image_moder"
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="130dp"
+        android:text="Решенно" />
+
+
+    <RadioButton
+        android:id="@+id/radioButtonStatusStrike"
+        android:layout_width="116dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/problem_image_moder"
+        android:layout_marginTop="105dp"
+        android:layout_marginLeft="260dp"
+        android:text="Нарушение цензуры" />
+
+
+</RelativeLayout>
