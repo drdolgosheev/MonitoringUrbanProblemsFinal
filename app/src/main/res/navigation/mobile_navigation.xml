@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_dashboard">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -14,12 +14,12 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.monitoringurbanproblems.ui.dashboard.MapFragment"
-        android:label="@string/title_dashboard"
+        android:label="Карта проблем"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.monitoringurbanproblems.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="Профиль и настройки"
         tools:layout="@layout/fragment_profile" />
 </navigation>

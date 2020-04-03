@@ -21,13 +21,19 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.monitoringurbanproblems.LoginActivity;
+import com.example.monitoringurbanproblems.MainActivity;
 import com.example.monitoringurbanproblems.Problem;
 import com.example.monitoringurbanproblems.R;
 import com.example.monitoringurbanproblems.User;
 import com.example.monitoringurbanproblems.add_problem;
 import com.example.monitoringurbanproblems.callbackListener;
+import com.example.monitoringurbanproblems.moderatorPage;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +51,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     StorageReference storageRef;
     User cur_user;
     Problem problem;
@@ -57,6 +64,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> mImagesUrls = new ArrayList<>();
     private ArrayList<String> mDescr = new ArrayList<>();
     public String url = " ";
+    public String mail;
     public int counter = 1;
     public int counter2 = 1;
 
@@ -69,22 +77,31 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.ResycleWiev);
         counter = 1;
         storageRef = storage.getReference();
-        initImageBitmaps();
-//        final TextView textView = root.findViewById(R.id.text_home);
-//        homeViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-
-        chekGPS();
-
+        if (fb_user == null) {
+            mAuth.signInWithEmailAndPassword("anon@mail.ru", "123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.e("LogInGuest", task.toString());
+                        chekGPS();
+                        initImageBitmaps();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("Failure", e.toString());
+                }
+            });
+        } else {
+            chekGPS();
+            initImageBitmaps();
+        }
         return root;
     }
 
     private void initImageBitmaps(){
-        final String mail = fb_user.getEmail();
+        mail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         cur_user = null;
             db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -170,6 +187,19 @@ public class HomeFragment extends Fragment {
                     })
                     .setCancelable(false).show();
         }
+    }
+
+    public void signIn(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Log.e("Успешный гостевой вход", "Успешно");
+                        }
+                    }
+                });
     }
 
     public void getUri(int i, final callbackListener myListener) {

@@ -29,8 +29,11 @@ import com.example.monitoringurbanproblems.R;
 import com.example.monitoringurbanproblems.RegisterActivity;
 import com.example.monitoringurbanproblems.User;
 import com.example.monitoringurbanproblems.add_problem;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -55,12 +58,13 @@ public class NotificationsFragment extends Fragment {
     private FirebaseUser fb_user = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
-    StorageReference riversRef = storageRef.child("Profile_image/" + fb_user.getEmail());
+    StorageReference riversRef;
     Uri path;
 
     TextView email, prob_count;
     Button logout_but, upload_ava_but;
     CircleImageView avatar;
+    ImageView upload_ava_iv;
 
     User cur_user;
     String mail, email_message, problem_message;
@@ -69,74 +73,142 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        email = root.findViewById(R.id.user_email_profile);
-        prob_count = root.findViewById(R.id.problems_count_profile);
-        logout_but = root.findViewById(R.id.logout_account);
-        upload_ava_but = root.findViewById(R.id.upload_avatar);
-        avatar = root.findViewById(R.id.avatar_pic);
-        mail = fb_user.getEmail();
+        if(fb_user == null || fb_user.getEmail().equals("anon@mail.ru")) {
+            mAuth.signInWithEmailAndPassword("anon@mail.ru", "123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.e("LogInGuest", task.toString());
+                        email = root.findViewById(R.id.user_email_profile);
+                        prob_count = root.findViewById(R.id.problems_count_profile);
+                        logout_but = root.findViewById(R.id.logout_account);
+                        upload_ava_iv = root.findViewById(R.id.new_upload_but);
+                        avatar = root.findViewById(R.id.avatar_pic);
+                        mail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-        avatar.setImageResource(R.drawable.ic_user_default);
+                        avatar.setImageResource(R.drawable.ic_user_blue);
 
-        logout_but.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mAuth.signOut();
-                logoutIntent();
-            }
-        });
+                        logout_but.setVisibility(View.INVISIBLE);
+                        logout_but.setClickable(false);
+                        logout_but.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                mAuth.signOut();
+                                Toast.makeText(getContext(), "Вы успешно покинули вашу учетную запись",
+                                        Toast.LENGTH_SHORT).show();
+//                logoutIntent();
+                            }
+                        });
 
-        upload_ava_but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-            }
-        });
+                        upload_ava_iv.setImageResource(R.drawable.download);
+                        upload_ava_iv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "Что бы загрузить аватар зарегестрируйтесь или войдите",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-        riversRef = storageRef.child("Profile_image/" + fb_user.getEmail());
+                        riversRef = storageRef.child("Profile_image/" + mail);
 
-        db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                cur_user = documentSnapshot.toObject(User.class);
+                        db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                cur_user = documentSnapshot.toObject(User.class);
 
-                email_message = "Email: " + cur_user.getMail();
-                problem_message = "Problems total uploaded: " + cur_user.getProblemCount();
+                                email_message = "Email: " + cur_user.getMail();
+                                problem_message = "Problems total uploaded: " + cur_user.getProblemCount();
 
-                email.setText(email_message);
-                prob_count.setText(problem_message);
-                if (!cur_user.isHaveAva().equals("")) {
-                    riversRef.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Glide.with(getContext())
-                                    .load(uri)
-                                    .into(avatar);
-                            Log.e("Ava is notnull", riversRef.getDownloadUrl().toString());
-                        }
-                    });
+                                email.setText(email_message);
+                                prob_count.setText(problem_message);
+                                avatar = null;
+                                Log.e("Ava is null", " ");
+                            }
+                        });
+                    }
                 }
-                else {
-                    avatar = null;
-                    Log.e("Ava is null", " ");
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("Failure", e.toString());
                 }
-            }
-        });
+            });
 
-        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+//        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//            }
+//        });
+        } else {
+            email = root.findViewById(R.id.user_email_profile);
+            prob_count = root.findViewById(R.id.problems_count_profile);
+            logout_but = root.findViewById(R.id.logout_account);
+            upload_ava_iv = root.findViewById(R.id.new_upload_but);
+            avatar = root.findViewById(R.id.avatar_pic);
+            mail = fb_user.getEmail();
+
+            logout_but.setVisibility(View.VISIBLE);
+            logout_but.setClickable(true);
+
+            avatar.setImageResource(R.drawable.ic_user_blue);
+            upload_ava_iv.setImageResource(R.drawable.download);
+
+            logout_but.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    mAuth.signOut();
+                    Toast.makeText(getContext(), "Вы успешно покинули вашу учетную запись",
+                            Toast.LENGTH_SHORT).show();
+//                logoutIntent();
+                }
+            });
+
+            upload_ava_iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                }
+            });
+
+            riversRef = storageRef.child("Profile_image/" + fb_user.getEmail());
+
+            db.collection("users").document(mail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    cur_user = documentSnapshot.toObject(User.class);
+
+                    email_message = "Email: " + cur_user.getMail();
+                    problem_message = "Problems total uploaded: " + cur_user.getProblemCount();
+
+                    email.setText(email_message);
+                    prob_count.setText(problem_message);
+                    if (!cur_user.isHaveAva().equals("")) {
+                        Log.e("isHaveAva: ", "|" + cur_user.isHaveAva() + "|");
+                        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Glide.with(getContext())
+                                        .load(uri)
+                                        .into(avatar);
+                                Log.e("Ava is notnull", riversRef.getDownloadUrl().toString());
+                            }
+                        });
+                    } else {
+                        avatar = null;
+                        Log.e("Ava is null", " ");
+                    }
+                }
+            });
+        }
         return root;
     }
 
@@ -181,6 +253,9 @@ public class NotificationsFragment extends Fragment {
         switch (requestCode) {
             case GALLERY_REQUEST:
                 if (resultCode == RESULT_OK) {
+
+                    riversRef = storageRef.child("Profile_image/" + fb_user.getEmail());
+
                     path = imageReturnedIntent.getData();
 
                     UploadTask uploadTask = riversRef.putFile(path);

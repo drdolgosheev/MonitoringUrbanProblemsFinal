@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/round_corner_slim"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
     android:id="@+id/parent_layout_moder"
-    android:layout_marginTop="2dp">
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginTop="2dp"
+    android:background="@drawable/blue"
+    android:padding="20dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/problem_image_moder"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"
-        />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/problem_description_moder"
@@ -50,8 +48,8 @@
         android:layout_width="116dp"
         android:layout_height="21dp"
         android:layout_alignTop="@+id/problem_image_moder"
-        android:layout_marginTop="110dp"
         android:layout_marginLeft="130dp"
+        android:layout_marginTop="110dp"
         android:text="Решенно" />
 
 
@@ -60,8 +58,8 @@
         android:layout_width="116dp"
         android:layout_height="35dp"
         android:layout_alignTop="@+id/problem_image_moder"
-        android:layout_marginTop="105dp"
         android:layout_marginLeft="260dp"
+        android:layout_marginTop="105dp"
         android:text="Нарушение цензуры" />
 
 

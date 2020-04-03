@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/round_corner_slim"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
     android:id="@+id/parent_layout"
-    android:layout_marginTop="2dp">
+    android:layout_width="match_parent"
+    android:layout_height="155dp"
+    android:layout_marginTop="2dp"
+    android:background="@drawable/blue"
+    android:padding="20dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/problem_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"
-        />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/problem_description"
@@ -41,12 +39,10 @@
         android:id="@+id/problem_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/problem_image"
+        android:layout_marginTop="94dp"
         android:text="Status"
         android:textColor="#000"
-        android:textSize="10sp"
-        android:layout_alignTop="@+id/problem_image"
-        android:layout_marginTop="90dp"
-        />
-
+        android:textSize="11sp" />
 
 </RelativeLayout>
