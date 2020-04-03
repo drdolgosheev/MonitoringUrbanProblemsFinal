@@ -54,7 +54,7 @@ public class add_problem extends Activity implements View.OnClickListener {
     Double latitude;
     EditText prob_desc, prob_name;
     Button confirm_but;
-    FloatingActionButton photo_button;
+    ImageView photo_button;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     User cur_user;
     Problem problem;
@@ -79,11 +79,19 @@ public class add_problem extends Activity implements View.OnClickListener {
         prob_desc = (EditText) findViewById(R.id.text_problem_description);
         prob_name = (EditText) findViewById(R.id.prob_name);
         confirm_but = (Button) findViewById(R.id.button_add_problem);
-        photo_button = (FloatingActionButton) findViewById(R.id.batton_camera);
+        photo_button = (ImageView) findViewById(R.id.photo_but_iv);
         arguments = getIntent().getExtras();
         longitude = arguments.getDouble("longitude");
         latitude = arguments.getDouble("latitude");
         problem = new Problem(0, 0, fb_user.getEmail(), "testurl", "url", 0, "name");
+
+        photo_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+
         problemList = new List<Problem>() {
             @Override
             public int size() {
@@ -216,10 +224,6 @@ public class add_problem extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == photo_button.getId()){
-            dispatchTakePictureIntent();
-        }
-
         if (v.getId() == confirm_but.getId()) {
             if (prob_name.getText().toString().isEmpty()) {
                 Toast.makeText(add_problem.this, "Укажите название проблемы",
