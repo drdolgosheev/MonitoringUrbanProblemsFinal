@@ -1,10 +1,12 @@
 package com.example.monitoringurbanproblems;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,25 +33,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends Activity implements View.OnClickListener {
     private Button reg_but;
-    private TextInputEditText login;
+    private EditText login;
     private EditText pass, conf_pass;
     private FirebaseAuth mAuth;
-    private TextView allReg;
     private User user;
-    private TextInputEditText user_name_text, user_surname_text;
+    private EditText user_name_text, user_surname_text;
     private String user_name, user_surname;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private Problem problem;
     private List<Problem> prob_list;
+    private ImageView ico;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTheme(android.R.style.Theme_Dialog);
+
         setContentView(R.layout.activity_register);
 
         // Initialize Firebase Auth
@@ -58,10 +63,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         myRef = FirebaseDatabase.getInstance().getReference();
 
         reg_but = (Button) findViewById(R.id.registerButton);
-        login = (TextInputEditText) findViewById(R.id.login);
+        login = (EditText) findViewById(R.id.login);
         pass = (EditText) findViewById(R.id.password);
         conf_pass = (EditText) findViewById(R.id.passwordConfiration);
-        allReg = (TextView) findViewById(R.id.alreadyReg);
+        ico = (ImageView) findViewById(R.id.reg_ico);
+
+        ico.setImageResource(R.drawable.loginico);
 
         prob_list = new List<Problem>() {
             @Override
@@ -190,8 +197,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         prob_list.add(0,problem);
         user = new User("John","Doe","test@mail.com",
                 0,0,false,false, prob_list, "");
-        user_name_text = (TextInputEditText) findViewById(R.id.user_name);
-        user_surname_text = (TextInputEditText) findViewById(R.id.user_surname);
+        user_name_text = (EditText) findViewById(R.id.user_name);
+        user_surname_text = (EditText) findViewById(R.id.user_surname);
 
     }
 
@@ -200,15 +207,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        // для ролей
-//        updateUI(currentUser);
-            allReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
 

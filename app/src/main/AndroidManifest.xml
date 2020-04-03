@@ -51,9 +51,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"
-            android:theme="@style/Theme.Transparent"
-            />
-        <activity android:name=".RegisterActivity">
+            android:theme="@style/Theme.Transparent"/>
+        <activity android:name=".RegisterActivity"
+            android:theme="@style/Theme.Transparent">
         </activity>
 
         <meta-data
