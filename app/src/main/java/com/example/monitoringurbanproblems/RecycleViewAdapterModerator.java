@@ -1,6 +1,7 @@
 package com.example.monitoringurbanproblems;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecycleViewAdapterModerator.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecycleViewAdapterModerator.ViewHolder holder, final int position) {
 
         cur_pos = position;
         Log.e("cur_pos: ", cur_pos + " ");
@@ -222,7 +224,22 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, mImagesName.get(cur_pos), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, ModeratorCommentFrame.class);
+                Problem c_prob = probList.get(position);
+                intent.putExtra("position", position);
+                intent.putExtra("state", c_prob.getStatus());
+                try {
+                    intent.putExtra("adress", c_prob.getAddressForLocation(mContext,
+                            c_prob.getLatitude(), c_prob.getLongitude()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtra("name", c_prob.getName());
+                intent.putExtra("desc", c_prob.getDescription());
+                intent.putExtra("moder_com", c_prob.getModer_coment());
+                intent.putExtra("probId", c_prob.getId());
+                intent.putExtra("userMail", c_prob.getUserId());
+                mContext.startActivity(intent);
             }
         });
     }

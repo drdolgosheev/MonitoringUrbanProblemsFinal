@@ -153,7 +153,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 .position(probPos)
                                 .title(cur_prob.getName())
                                 .draggable(false)
-                                .icon(BitmapDescriptorFactory.fromBitmap(icon_x)));
+                                .icon(BitmapDescriptorFactory.fromBitmap(icon_x)))
+                                .setSnippet(cur_prob.getDescription());
                     }
                 }
             }

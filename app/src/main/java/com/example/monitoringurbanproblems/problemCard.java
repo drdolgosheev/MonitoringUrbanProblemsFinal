@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,8 +14,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,6 +39,7 @@ public class problemCard extends Activity{
     TextView status, moderEmail, header_prob_name;
     ImageView exit_but, pic;
     int counter;
+    boolean isUser;
     User cur_user;
     Bundle arguments;
 
@@ -82,9 +90,8 @@ public class problemCard extends Activity{
 
         getUserProbList();
 
-        comments.setEnabled(false);
-        status.setEnabled(false);
-
+        desc.setTag(comments.getKeyListener());
+        desc.setKeyListener(null);
     }
 
     public void getUserProbList(){
@@ -97,6 +104,14 @@ public class problemCard extends Activity{
                 desc.setText(cur_prob.getDescription());
                 header_prob_name.setText(cur_prob.getName());
                 status.setText("Статус: " + Problem.getStatus(cur_prob.getStatus()));
+                moderEmail.setText("Над проблемой работает: " + cur_prob.getModer_mail());
+
+                if (!cur_prob.getModer_coment().equals(" "))
+                    comments.setText(cur_prob.getModer_coment());
+
+                Log.e("COMENT", cur_prob.getModer_coment());
+                comments.setTag(comments.getKeyListener());
+                comments.setKeyListener(null);
             }
         });
     }
