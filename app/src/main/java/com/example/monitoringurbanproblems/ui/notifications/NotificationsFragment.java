@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.example.monitoringurbanproblems.LoginActivity;
+import com.example.monitoringurbanproblems.MainActivity;
 import com.example.monitoringurbanproblems.R;
 import com.example.monitoringurbanproblems.RegisterActivity;
 import com.example.monitoringurbanproblems.User;
@@ -112,6 +113,7 @@ public class NotificationsFragment extends Fragment {
                                 register_but.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "Вы успешно покинули вашу учетную запись",
                                         Toast.LENGTH_SHORT).show();
+                                logoutIntent();
                             }
                         });
 
@@ -211,7 +213,7 @@ public class NotificationsFragment extends Fragment {
                     mAuth.signOut();
                     Toast.makeText(getContext(), "Вы успешно покинули вашу учетную запись",
                             Toast.LENGTH_SHORT).show();
-//                logoutIntent();
+                    logoutIntent();
                 }
             });
 
@@ -263,8 +265,7 @@ public class NotificationsFragment extends Fragment {
     }
 
     public void logoutIntent() {
-        Intent intent = new Intent(getContext(), RegisterActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 

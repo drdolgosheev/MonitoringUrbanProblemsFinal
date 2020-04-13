@@ -193,7 +193,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
             }
         };
         problem = new Problem(0,0, "testid", "testdesc",
-                "testurl", 0, "testname");
+                "testurl", 0, "testname", " ", " ");
         prob_list.add(0,problem);
         user = new User("John","Doe","test@mail.com",
                 0,0,false,false, prob_list, "");

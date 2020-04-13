@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.Activity.*;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -73,7 +74,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
         int real_pos = position + 1;
         Log.e("POS", position + " ");
-        StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + real_pos);
+        StorageReference riversRef = storageRef.child("images/" + fb_user.getEmail() + "/" + real_pos+".jpeg");
         riversRef.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -92,7 +93,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"Статус: " + Problem.getStatus(mStatus.get(position)), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, problemCard.class);
+                intent.putExtra("position", position);
+                mContext.startActivity(intent);
+//                Toast.makeText(mContext,"Статус: " + Problem.getStatus(mStatus.get(position)), Toast.LENGTH_LONG).show();
             }
         });
     }

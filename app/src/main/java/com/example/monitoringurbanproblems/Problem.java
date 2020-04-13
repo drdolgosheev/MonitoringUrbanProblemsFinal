@@ -1,10 +1,7 @@
 package com.example.monitoringurbanproblems;
 
 import android.content.Context;
-import android.location.Address;
 import android.location.Geocoder;
-
-import com.google.firebase.database.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -24,11 +21,13 @@ public class Problem {
      */
     private int status;
     private String img_url;
+    private String moder_mail = "";
+    private String moder_coment = "";
 
     public Problem(){}
 
     public Problem(double latitude, double longitude, String user_id, String description,
-                      String img_url, int id, String name) {
+                      String img_url, int id, String name, String moder_mail, String moder_coment) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.user_id = user_id;
@@ -36,6 +35,8 @@ public class Problem {
         this.img_url = img_url;
         this.id = id;
         this.name = name;
+        this.moder_mail = moder_mail;
+        this.moder_coment = moder_coment;
     }
 
     public double getLatitude() {
@@ -120,7 +121,7 @@ public class Problem {
         else if (State == 4){
             return "Решена";
         }else {
-            return "Ошибка";
+            return "Отклоненно модератором";
         }
     }
 
@@ -129,4 +130,19 @@ public class Problem {
         return gc.getFromLocation(lat, lon, 1).get(0).getAddressLine(0);
     }
 
+    public String getModer_mail() {
+        return moder_mail;
+    }
+
+    public void setModer_mail(String moder_mail) {
+        this.moder_mail = moder_mail;
+    }
+
+    public String getModer_coment() {
+        return moder_coment;
+    }
+
+    public void setModer_coment(String moder_coment) {
+        this.moder_coment = moder_coment;
+    }
 }

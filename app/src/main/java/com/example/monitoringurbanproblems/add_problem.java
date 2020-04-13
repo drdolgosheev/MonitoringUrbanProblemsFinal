@@ -68,6 +68,8 @@ public class add_problem extends Activity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
+//        setTheme(android.R.style.Theme_Dialog);
+
         setContentView(R.layout.activity_add_problem);
 
         View v = new View(add_problem.this);
@@ -83,7 +85,7 @@ public class add_problem extends Activity implements View.OnClickListener {
         arguments = getIntent().getExtras();
         longitude = arguments.getDouble("longitude");
         latitude = arguments.getDouble("latitude");
-        problem = new Problem(0, 0, fb_user.getEmail(), "testurl", "url", 0, "name");
+        problem = new Problem(0, 0, fb_user.getEmail(), "testurl", "url", 0, "name", " ", " ");
 
         photo_button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -252,7 +254,7 @@ public class add_problem extends Activity implements View.OnClickListener {
                         problemList.add(problem);
                         cur_user.setProblems(problemList);
                         cur_user.getProblems().get(cur_user.getProblemCount()-1).setId(cur_user.getProblemCount());
-                        db.collection("problems").document(mail+"_"+cur_user.getProblemCount()).set(problem);
+                        db.collection("problems").document(mail+"_"+cur_user.getProblemCount()+".jpeg").set(problem);
                         db.collection("users").document(documentSnapshot.getId()).set(cur_user);
                         Toast.makeText(add_problem.this, documentSnapshot.getId(),
                                 Toast.LENGTH_SHORT).show();
@@ -356,10 +358,10 @@ public class add_problem extends Activity implements View.OnClickListener {
                     Integer pc = cur_user.getProblemCount() + 1;
 
                     Uri file = Uri.fromFile(new File(currentPhotoPath));
-                    final StorageReference riversRef = storageRef.child("images/"+fb_user.getEmail() + "/" + pc);
+                    final StorageReference riversRef = storageRef.child("images/"+fb_user.getEmail() + "/" + pc+".jpeg");
                     UploadTask uploadTask = riversRef.putFile(file);
 
-                    final StorageReference riversRef2 = storageRef.child("prob_for_moder/"+fb_user.getEmail() + "_" + pc );
+                    final StorageReference riversRef2 = storageRef.child("prob_for_moder/"+fb_user.getEmail() + "_" + pc +".jpeg");
                     UploadTask uploadTask1 = riversRef2.putFile(file);
 
                     uploadTask.addOnFailureListener(new OnFailureListener() {

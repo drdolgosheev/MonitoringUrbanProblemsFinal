@@ -2,8 +2,119 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="180dp"
-    android:layout_height="180dp"
-    android:layout_marginTop="250dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:theme="@android:style/Theme.Dialog"
-    tools:context=".problemCard" />
+    tools:context=".problemCard">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/prob_name_header"
+        android:layout_width="355dp"
+        android:layout_height="596dp"
+        android:background="@drawable/round_corner_slim"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/image_photo_card"
+            android:layout_width="127dp"
+            android:layout_height="117dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/round_corner_slim"
+            android:src="@drawable/default_phto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_text_card" />
+
+        <TextView
+            android:id="@+id/header_text_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="Заголовок"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/prob_desc_card"
+            android:layout_width="334dp"
+            android:layout_height="135dp"
+            android:layout_marginTop="27dp"
+            android:background="@drawable/round_corner_slim"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Описание:"
+            android:inputType="textMultiLine"
+            android:text="Описание модератора:"
+            android:textColor="#000"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_photo_card"
+            tools:text="Описание:" />
+
+        <TextView
+            android:id="@+id/status_card_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="148dp"
+            android:text="Статус: "
+            android:textColor="#000"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coment_card" />
+
+        <TextView
+            android:id="@+id/moder_email_text_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="132dp"
+            android:text="Модератор: "
+            android:textColor="#000"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/status_card_text" />
+
+        <EditText
+            android:id="@+id/coment_card"
+            android:layout_width="334dp"
+            android:layout_height="91dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="104dp"
+            android:background="@drawable/round_corner_slim"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Коментарии:"
+            android:inputType="textMultiLine"
+            android:text="Коментарии модератора:"
+            android:textColor="#000"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.523"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prob_desc_card" />
+
+        <ImageView
+            android:id="@+id/exit_but_card"
+            android:layout_width="41dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/cross"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

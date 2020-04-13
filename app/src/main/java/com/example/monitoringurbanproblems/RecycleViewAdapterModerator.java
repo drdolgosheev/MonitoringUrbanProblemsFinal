@@ -71,12 +71,12 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
     public void onBindViewHolder(@NonNull final RecycleViewAdapterModerator.ViewHolder holder, int position) {
 
         cur_pos = position;
-        Log.e("cur_pos: ",  cur_pos+ " ");
+        Log.e("cur_pos: ", cur_pos + " ");
         cur_problem = probList.get(position);
-        StorageReference riversRef = storageRef.child("prob_for_moder/" + cur_problem.getUserId() + "_" + cur_problem.getId());
+        StorageReference riversRef = storageRef.child("prob_for_moder/" + cur_problem.getUserId() + "_" + cur_problem.getId() + ".jpeg");
 
-        Log.e("URI",riversRef.getPath());
-        riversRef.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+        Log.e("URI", riversRef.getPath());
+        riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(mContext)
@@ -89,13 +89,33 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
 
         holder.prob_desc.setText(mDescription.get(position));
 
-        holder.checked.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener(){
+        if (cur_problem.getStatus() >= 2){
+            holder.checked.setVisibility(View.INVISIBLE);
+            holder.checked.setClickable(false);
+        }
+
+        if (cur_problem.getStatus() >= 4){
+            holder.solved.setVisibility(View.INVISIBLE);
+            holder.solved.setClickable(false);
+        }
+
+        if(cur_problem.getStatus() == 0){
+            holder.checked.setVisibility(View.INVISIBLE);
+            holder.checked.setClickable(false);
+            holder.solved.setVisibility(View.INVISIBLE);
+            holder.solved.setClickable(false);
+            holder.giveStrike.setChecked(true);
+            holder.giveStrike.setClickable(false);
+        }
+
+        holder.checked.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     cur_problem.setStatus(2);
-                    db.collection("problems").document( cur_problem.getUserId() + "_" + cur_problem.getId()).set(cur_problem).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    cur_problem.setModer_mail(fb_user.getEmail());
+                    db.collection("problems").document(cur_problem.getUserId() + "_" + cur_problem.getId() + ".jpeg").set(cur_problem).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(mContext, "Статус проблемы успешно изменен", Toast.LENGTH_LONG).show();
@@ -116,6 +136,85 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
                             });
                         }
                     });
+
+                    holder.checked.setVisibility(View.INVISIBLE);
+                    holder.checked.setClickable(false);
+                }
+            }
+        });
+
+        holder.solved.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cur_problem.setModer_mail(fb_user.getEmail());
+                    cur_problem.setStatus(4);
+                    db.collection("problems").document(cur_problem.getUserId() + "_" + cur_problem.getId() + ".jpeg").set(cur_problem).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(mContext, "Статус проблемы успешно изменен", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    db.collection("users").document(cur_problem.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            User cur_user = documentSnapshot.toObject(User.class);
+                            probList.set(cur_pos, cur_problem);
+                            cur_user.setProblems(probList);
+                            db.collection("users").document(cur_problem.getUserId()).set(cur_user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.e("DABASE: ", "Problem seted");
+                                }
+                            });
+                        }
+                    });
+
+                    holder.solved.setVisibility(View.INVISIBLE);
+                    holder.solved.setClickable(false);
+                }
+            }
+        });
+
+
+        holder.giveStrike.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cur_problem.setModer_mail(fb_user.getEmail());
+                    cur_problem.setStatus(0);
+                    db.collection("problems").document(cur_problem.getUserId() + "_" + cur_problem.getId() + ".jpeg").set(cur_problem).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(mContext, "Статус проблемы успешно изменен", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    db.collection("users").document(cur_problem.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            User cur_user = documentSnapshot.toObject(User.class);
+                            probList.set(cur_pos, cur_problem);
+                            cur_user.setProblems(probList);
+                            int cur_strike_count = cur_user.getStrikeCount() + 1;
+                            cur_user.setStrikeCount(cur_strike_count);
+                            db.collection("users").document(cur_problem.getUserId()).set(cur_user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Log.e("DABASE: ", "Problem seted");
+                                }
+                            });
+                        }
+                    });
+
+                    holder.checked.setVisibility(View.INVISIBLE);
+                    holder.checked.setClickable(false);
+                    holder.solved.setVisibility(View.INVISIBLE);
+                    holder.solved.setClickable(false);
+                    holder.giveStrike.setClickable(false);
                 }
             }
         });
@@ -123,7 +222,7 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,mImagesName.get(cur_pos), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, mImagesName.get(cur_pos), Toast.LENGTH_LONG).show();
             }
         });
     }

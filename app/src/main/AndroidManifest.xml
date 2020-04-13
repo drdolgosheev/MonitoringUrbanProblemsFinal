@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".moderatorPage"></activity>
-        <activity android:name=".problemCard" />
+        <activity android:name=".problemCard"
+            android:theme="@style/Theme.Transparent"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -51,7 +52,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"
-            android:theme="@style/Theme.Transparent"/>
+            android:theme="@style/Theme.Transparent"
+            />
         <activity android:name=".RegisterActivity"
             android:theme="@style/Theme.Transparent">
         </activity>
