@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="144dp"
         android:text="TextView"
         android:textColor="#000"
         android:textSize="20sp"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="15dp"
         android:text="Загруженно проблем: "
         android:textColor="#000"
         android:textSize="20sp"
@@ -34,20 +34,19 @@
         android:id="@+id/avatar_pic"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="52dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_user_blue"
-        android:scaleType="centerCrop"
-        />
+        tools:srcCompat="@drawable/ic_user_blue" />
 
     <ImageView
         android:id="@+id/new_upload_but"
         android:layout_width="32dp"
         android:layout_height="26dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,4 +151,30 @@
         app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logout_account_iv" />
+
+    <TextView
+        android:id="@+id/name_surname_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Джон Доу"
+        android:textColor="#000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/strike_count_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Замечаний: "
+        android:textColor="#000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/problems_count_profile" />
 </androidx.constraintlayout.widget.ConstraintLayout>

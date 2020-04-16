@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="155dp"
+    android:layout_height="145dp"
     android:layout_marginTop="2dp"
-    android:background="@drawable/blue"
-    android:padding="20dp">
+    android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/problem_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_user_blue" />
 
     <TextView
         android:id="@+id/problem_description"
@@ -40,9 +39,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/problem_image"
-        android:layout_marginTop="94dp"
+        android:layout_marginTop="90dp"
         android:text="Status"
         android:textColor="#000"
         android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="120dp"
+        android:background="#696969"
+        android:text="TextView" />
 
 </RelativeLayout>

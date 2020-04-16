@@ -54,7 +54,7 @@ public class NotificationsFragment extends Fragment {
     StorageReference riversRef;
     Uri path;
 
-    TextView email, prob_count, reg_text, login_text, logout_text;
+    TextView email, prob_count, reg_text, login_text, logout_text, name_surname, strikeCounter;
     Button upload_ava_but;
     CircleImageView avatar;
     ImageView upload_ava_iv, login_but, register_but, logout_but;
@@ -80,6 +80,8 @@ public class NotificationsFragment extends Fragment {
                         reg_text = root.findViewById(R.id.reg_text);
                         login_text = root.findViewById(R.id.login_text);
                         logout_text = root.findViewById(R.id.logout_text);
+                        name_surname = root.findViewById(R.id.name_surname_profile);
+                        strikeCounter = root.findViewById(R.id.strike_count_profile);
 
                         login_text.setVisibility(View.INVISIBLE);
                         logout_but.setVisibility(View.INVISIBLE);
@@ -152,6 +154,8 @@ public class NotificationsFragment extends Fragment {
                                 email_message = "Почта: " + cur_user.getMail();
                                 problem_message = "Проблем загружено: " + cur_user.getProblemCount();
 
+                                strikeCounter.setText("Замечаний: " + cur_user.getStrikeCount());
+                                name_surname.setText("Джон Доу");
                                 email.setText(email_message);
                                 prob_count.setText(problem_message);
                                 avatar = null;
@@ -191,6 +195,8 @@ public class NotificationsFragment extends Fragment {
             reg_text = root.findViewById(R.id.reg_text);
             login_text = root.findViewById(R.id.login_text);
             logout_text = root.findViewById(R.id.logout_text);
+            name_surname = root.findViewById(R.id.name_surname_profile);
+            strikeCounter = root.findViewById(R.id.strike_count_profile);
 
 //            logout_text.setVisibility(View.VISIBLE);
             logout_but.setVisibility(View.VISIBLE);
@@ -238,6 +244,9 @@ public class NotificationsFragment extends Fragment {
 
                     email.setText(email_message);
                     prob_count.setText(problem_message);
+                    strikeCounter.setText("Замечаний: " + cur_user.getStrikeCount());
+                    name_surname.setText(cur_user.getName()+ " " + cur_user.getSurname());
+
                     if (!cur_user.isHaveAva().equals("")) {
                         Log.e("isHaveAva: ", "|" + cur_user.isHaveAva() + "|");
                         riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

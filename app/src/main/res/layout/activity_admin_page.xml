@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moderatorPage">
+    tools:context=".adminPage">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ResycleWievModerator"
+        android:id="@+id/ResycleWievAdmin"
         android:layout_width="match_parent"
         android:layout_height="650dp"
         android:background="@drawable/round_corner_slim"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="1.0"></androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/moderator_email_profile"
+        android:id="@+id/admin_email_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/logoutModerator_iv"
+        android:id="@+id/logoutAdmin_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"

@@ -196,7 +196,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener {
                 "testurl", 0, "testname", " ", " ");
         prob_list.add(0,problem);
         user = new User("John","Doe","test@mail.com",
-                0,0,false,false, prob_list, "");
+                0,0,false,false, prob_list, "", false);
         user_name_text = (EditText) findViewById(R.id.user_name);
         user_surname_text = (EditText) findViewById(R.id.user_surname);
 

@@ -27,6 +27,7 @@ import com.example.monitoringurbanproblems.Problem;
 import com.example.monitoringurbanproblems.R;
 import com.example.monitoringurbanproblems.User;
 import com.example.monitoringurbanproblems.add_problem;
+import com.example.monitoringurbanproblems.adminPage;
 import com.example.monitoringurbanproblems.callbackListener;
 import com.example.monitoringurbanproblems.moderatorPage;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -77,6 +78,7 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.ResycleWiev);
         counter = 1;
         storageRef = storage.getReference();
+
         if (fb_user == null) {
             mAuth.signInWithEmailAndPassword("anon@mail.ru", "123456").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -94,8 +96,44 @@ public class HomeFragment extends Fragment {
                 }
             });
         } else {
+            db.collection("users").document(fb_user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User c_user = documentSnapshot.toObject(User.class);
+                    if(c_user.isAdmin()){
+                        Intent intent = new Intent(getContext(), adminPage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+
+                    }else if(c_user.isModerator()){
+                        Intent intent = new Intent(getContext(), moderatorPage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+            });
             chekGPS();
             initImageBitmaps();
+            db.collection("users").document(fb_user.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User c_user = documentSnapshot.toObject(User.class);
+                    if(c_user.getStrikeCount()>=3){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder
+                                .setTitle("Ваш аккаунт заблокирован")
+                                .setMessage("Вы получили более двух замечаний, за использование ненормативных выражений")
+                                .setIcon(R.drawable.warning_blue)
+                                .setNeutralButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finishAffinity((Activity) getContext());
+                                    }
+                                })
+                                .setCancelable(false).show();
+                    }
+                }
+            });
         }
         return root;
     }

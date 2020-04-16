@@ -1,7 +1,10 @@
 package com.example.monitoringurbanproblems.ui.dashboard;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -60,6 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static androidx.core.app.ActivityCompat.finishAffinity;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static androidx.core.content.ContextCompat.startActivities;
 import static com.example.monitoringurbanproblems.ui.dashboard.MyLocationListener.imHere;
@@ -147,14 +151,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult())
                     {
                         Problem cur_prob = queryDocumentSnapshot.toObject(Problem.class);
-                        LatLng probPos = new LatLng(cur_prob.getLatitude(), cur_prob.getLongitude());
-                        list.add(cur_prob);
-                        mGoogleMap.addMarker(new MarkerOptions()
-                                .position(probPos)
-                                .title(cur_prob.getName())
-                                .draggable(false)
-                                .icon(BitmapDescriptorFactory.fromBitmap(icon_x)))
-                                .setSnippet(cur_prob.getDescription());
+                        if (cur_prob.getStatus() != 0 && cur_prob.getStatus() != 1 && cur_prob.getStatus() != 4) {
+                            LatLng probPos = new LatLng(cur_prob.getLatitude(), cur_prob.getLongitude());
+                            list.add(cur_prob);
+                            mGoogleMap.addMarker(new MarkerOptions()
+                                    .position(probPos)
+                                    .title(cur_prob.getName())
+                                    .draggable(false)
+                                    .icon(BitmapDescriptorFactory.fromBitmap(icon_x)))
+                                    .setSnippet(cur_prob.getDescription());
+                        }
                     }
                 }
             }
@@ -167,8 +173,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.e("TAG", "GPS is on");
                 latitude = imHere.getLatitude();
                 longitude = imHere.getLongitude();
-                Toast.makeText(getContext(), "latitude:" + latitude + " longitude:"
-                        + longitude, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "latitude:" + latitude + " longitude:"
+//                        + longitude, Toast.LENGTH_SHORT).show();
             } else {
                 //This is what you need:
                 locationManager.requestLocationUpdates(provider, 1000, 0,
@@ -178,6 +184,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         LatLng test = new LatLng(latitude, longitude);
+
+        if (isAnon){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder
+                    .setTitle("Для добавления проблемы авторизируйтесь")
+                    .setMessage("Это демонстрационная версия приложения, для " +
+                            "возможности полноценной работы приложения вам необходимо авторизоваться ")
+                    .setIcon(R.drawable.loginico).setCancelable(true).setNeutralButton("Ок", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            }).show();
+        }
 
         if(!isAnon)
             cur_marker = mGoogleMap.addMarker(new MarkerOptions().position(test).title("Добавить проблему").draggable(true).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
@@ -204,22 +223,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onInfoWindowClick(Marker marker) {
-                try {
                     double lat = 0;
                     double lon = 0;
                     if(marker.isDraggable()) {
                         lat = cur_marker.getPosition().latitude;
                         lon = cur_marker.getPosition().longitude;
-                        Toast.makeText(getContext(), getAddressForLocation(lat, lon).getAddressLine(0),
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), getAddressForLocation(lat, lon).getAddressLine(0),
+//                                Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), add_problem.class);
                         intent.putExtra("longitude", lon);
                         intent.putExtra("latitude", lat);
                         startActivity(intent);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }

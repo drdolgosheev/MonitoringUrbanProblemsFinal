@@ -37,7 +37,7 @@ public class problemCard extends Activity{
     StorageReference storageRef = storage.getReference();
     EditText desc, comments;
     TextView status, moderEmail, header_prob_name;
-    ImageView exit_but, pic;
+    ImageView pic;
     int counter;
     boolean isUser;
     User cur_user;
@@ -56,7 +56,6 @@ public class problemCard extends Activity{
         status = (TextView) findViewById(R.id.status_card_text);
         moderEmail = (TextView) findViewById(R.id.moder_email_text_card);
         header_prob_name = (TextView) findViewById(R.id.header_text_card);
-        exit_but = (ImageView) findViewById(R.id.exit_but_card);
         pic = (ImageView) findViewById(R.id.image_photo_card);
 
         arguments = getIntent().getExtras();
@@ -68,13 +67,13 @@ public class problemCard extends Activity{
     public void onStart() {
         super.onStart();
 
-        exit_but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(problemCard.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+//        exit_but.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(problemCard.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         int real_pos = counter + 1;
 

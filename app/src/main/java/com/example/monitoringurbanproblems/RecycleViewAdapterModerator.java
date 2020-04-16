@@ -76,6 +76,7 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
         Log.e("cur_pos: ", cur_pos + " ");
         cur_problem = probList.get(position);
         StorageReference riversRef = storageRef.child("prob_for_moder/" + cur_problem.getUserId() + "_" + cur_problem.getId() + ".jpeg");
+        Log.e(TAG, riversRef.getPath());
 
         Log.e("URI", riversRef.getPath());
         riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -99,6 +100,7 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
         if (cur_problem.getStatus() >= 4){
             holder.solved.setVisibility(View.INVISIBLE);
             holder.solved.setClickable(false);
+
         }
 
         if(cur_problem.getStatus() == 0){
@@ -174,6 +176,8 @@ public class RecycleViewAdapterModerator extends RecyclerView.Adapter<RecycleVie
                         }
                     });
 
+                    holder.checked.setVisibility(View.INVISIBLE);
+                    holder.checked.setClickable(false);
                     holder.solved.setVisibility(View.INVISIBLE);
                     holder.solved.setClickable(false);
                 }

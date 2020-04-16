@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout_admin"
+    android:layout_width="match_parent"
+    android:layout_height="135dp"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_admin"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_user_blue" />
+
+    <TextView
+        android:id="@+id/user_login_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@+id/profile_image_admin"
+        android:text="User Login"
+        android:textSize="20sp"
+        android:textColor="#000" />
+
+    <Switch
+        android:id="@+id/give_ban"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-145dp"
+        android:layout_marginTop="66dp"
+        android:layout_toRightOf="@+id/profile_image_admin"
+        android:text="Заблокировать" />
+
+    <Switch
+        android:id="@+id/make_moderator"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-150dp"
+        android:layout_marginTop="32dp"
+        android:text="Сделать модератором  " />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="1000dp"
+        android:layout_height="1dp"
+        android:layout_marginLeft="-600dp"
+        android:layout_marginTop="100dp"
+        android:background="#696969"
+        android:text="TextView" />
+
+
+</LinearLayout>

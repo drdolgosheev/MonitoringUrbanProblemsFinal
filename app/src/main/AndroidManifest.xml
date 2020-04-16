@@ -26,8 +26,10 @@
         android:roundIcon="@drawable/map"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ModeratorCommentFrame"
-            android:theme="@style/Theme.Transparent"></activity>
+        <activity android:name=".adminPage"></activity>
+        <activity
+            android:name=".ModeratorCommentFrame"
+            android:theme="@style/Theme.Transparent" />
         <activity android:name=".moderatorPage" />
         <activity
             android:name=".problemCard"
@@ -51,7 +53,6 @@
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -60,7 +61,8 @@
             android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/Theme.Transparent"></activity>
+            android:theme="@style/Theme.Transparent" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

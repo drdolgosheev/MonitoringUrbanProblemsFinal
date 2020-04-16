@@ -256,8 +256,6 @@ public class add_problem extends Activity implements View.OnClickListener {
                         cur_user.getProblems().get(cur_user.getProblemCount()-1).setId(cur_user.getProblemCount());
                         db.collection("problems").document(mail+"_"+cur_user.getProblemCount()+".jpeg").set(problem);
                         db.collection("users").document(documentSnapshot.getId()).set(cur_user);
-                        Toast.makeText(add_problem.this, documentSnapshot.getId(),
-                                Toast.LENGTH_SHORT).show();
                     }
                 });
 

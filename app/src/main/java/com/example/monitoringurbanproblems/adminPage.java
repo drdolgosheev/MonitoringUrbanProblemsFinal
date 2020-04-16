@@ -2,19 +2,17 @@ package com.example.monitoringurbanproblems;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.monitoringurbanproblems.ui.home.HomeViewModel;
-import com.example.monitoringurbanproblems.ui.home.RecycleViewAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class moderatorPage extends AppCompatActivity {
+public class adminPage extends AppCompatActivity {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -34,24 +32,27 @@ public class moderatorPage extends AppCompatActivity {
     private ImageView logout_button;
     private TextView email;
 
-    private ArrayList<Integer> mStatus = new ArrayList<>();
-    private ArrayList<String> mImagesName = new ArrayList<>();
-    private ArrayList<String> mDescr = new ArrayList<>();
+    private ArrayList<Boolean> mIsModer = new ArrayList<>();
+    private ArrayList<String> mUserlogin = new ArrayList<>();
+    private ArrayList<Integer> mUserStrikeCount = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_moderator_page);
+        setContentView(R.layout.activity_admin_page);
 
-        recyclerView = (RecyclerView) findViewById(R.id.ResycleWievModerator);
-        logout_button = (ImageView) findViewById(R.id.logoutModerator_iv);
-        email = (TextView) findViewById(R.id.moderator_email_profile);
+        recyclerView = (RecyclerView) findViewById(R.id.ResycleWievAdmin);
+        logout_button = (ImageView) findViewById(R.id.logoutAdmin_iv);
+        email = (TextView) findViewById(R.id.admin_email_profile);
 
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                Intent intent = new Intent(moderatorPage.this, MainActivity.class);
+                Toast.makeText(adminPage.this,
+                        "Успешно", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(adminPage.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -65,23 +66,20 @@ public class moderatorPage extends AppCompatActivity {
 
     private void InitBitMap(){
 
-        db.collection("problems").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
 
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    List<Problem> list = new ArrayList<>();
+                    List<User> list = new ArrayList<>();
                     for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult())
                     {
-                        Problem cur_prob = queryDocumentSnapshot.toObject(Problem.class);
-                        if(!cur_prob.getUserId().equals("anon@mail.ru")) {
-                            if(cur_prob.getStatus()!=0) {
-                                if(cur_prob.getStatus()!=4) {
-                                    list.add(cur_prob);
-                                    mDescr.add(cur_prob.getDescription());
-                                    mImagesName.add(cur_prob.getName());
-                                }
-                            }
+                        User cur_user = queryDocumentSnapshot.toObject(User.class);
+                        if(!cur_user.getMail().equals("anon@mail.ru") && !(cur_user.isAdmin())) {
+                            list.add(cur_user);
+                            mIsModer.add(cur_user.isModerator());
+                            mUserlogin.add(cur_user.getMail());
+                            mUserStrikeCount.add(cur_user.getStrikeCount());
                         }
                     }
                     initRecyclerView(list);
@@ -92,8 +90,8 @@ public class moderatorPage extends AppCompatActivity {
         });
     }
 
-    private void initRecyclerView(List<Problem> list){
-        RecycleViewAdapterModerator adapter = new RecycleViewAdapterModerator(list, mDescr, mImagesName, this);
+    private void initRecyclerView(List<User> list){
+        RecycleViewAdapterAdmin adapter = new RecycleViewAdapterAdmin(list, mIsModer, mUserlogin, mUserStrikeCount, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -12,13 +12,14 @@ public class User {
     private int problemCount = 0;
     private boolean isBaned = false;
     private boolean isModerator = false;
+    private boolean isAdmin = false;
     private List<Problem> problems;
     private String haveAva;
 
     public User(){}
 
     public User(String name, String surname, String mail, int strikeCount, int problemCount,
-                boolean isBaned, boolean isModerator, List<Problem> problems, String haveAva){
+                boolean isBaned, boolean isModerator, List<Problem> problems, String haveAva, boolean isAdmin){
         this.name = name;
         this.surname = surname;
         this.mail = mail;
@@ -28,6 +29,7 @@ public class User {
         this.isModerator = isModerator;
         this.problems = problems;
         this.haveAva = haveAva;
+        this.isAdmin = isAdmin;
     }
 
     public String getMail() {
@@ -102,4 +104,11 @@ public class User {
         this.haveAva = Ava;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 }

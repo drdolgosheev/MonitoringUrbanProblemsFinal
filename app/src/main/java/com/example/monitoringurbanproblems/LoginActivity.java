@@ -93,7 +93,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                                 Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();
-                                    }else {
+                                    }else if(cur_user.isAdmin()){
+                                        Intent intent = new Intent(getApplicationContext(), adminPage.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                                Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else {
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                                 Intent.FLAG_ACTIVITY_NEW_TASK);

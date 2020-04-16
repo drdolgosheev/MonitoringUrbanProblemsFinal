@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/prob_name_header"
         android:layout_width="355dp"
-        android:layout_height="596dp"
+        android:layout_height="600dp"
         android:background="@drawable/round_corner_slim"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
             android:id="@+id/header_text_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="32dp"
             android:text="Заголовок"
             android:textColor="#000"
             android:textSize="20sp"
@@ -106,17 +106,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/prob_desc_card" />
-
-        <ImageView
-            android:id="@+id/exit_but_card"
-            android:layout_width="41dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/cross"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/prob_desc_card"
+            app:layout_constraintVertical_bias="0.119" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

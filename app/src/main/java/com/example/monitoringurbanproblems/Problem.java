@@ -113,7 +113,7 @@ public class Problem {
             return "На рассмотрении";
         }
         else if (State == 2){
-            return "Проверена";
+            return "В процессе решения";
         }
         else if (State == 3){
             return "Проверена";
