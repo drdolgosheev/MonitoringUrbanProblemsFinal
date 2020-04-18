@@ -61,6 +61,7 @@ public class add_problem extends Activity implements View.OnClickListener {
     List<Problem> problemList;
     String problem_description, problem_name;
     String currentPhotoPath;
+    Boolean isPhotoAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,7 +234,7 @@ public class add_problem extends Activity implements View.OnClickListener {
             } else if (prob_desc.getText().toString().isEmpty()) {
                 Toast.makeText(add_problem.this, "Укажите описание проблемы",
                         Toast.LENGTH_SHORT).show();
-            } else {
+            } else if(isPhotoAdded){
                 problem_description = prob_desc.getText().toString();
                 problem_name = prob_name.getText().toString();
                 problem.setDescription(problem_description);
@@ -263,6 +264,9 @@ public class add_problem extends Activity implements View.OnClickListener {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
+            } else {
+                Toast.makeText(add_problem.this, "Добавьте фотографию",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -361,6 +365,8 @@ public class add_problem extends Activity implements View.OnClickListener {
 
                     final StorageReference riversRef2 = storageRef.child("prob_for_moder/"+fb_user.getEmail() + "_" + pc +".jpeg");
                     UploadTask uploadTask1 = riversRef2.putFile(file);
+
+                    isPhotoAdded = true;
 
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
